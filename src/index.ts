@@ -6,9 +6,11 @@ import cors from 'cors';
 import compression from 'compression';
 import cookieparser from 'cookie-parser';
 dotenv.config();
-const PORT = process.env.PORT ?? 5173;
+import connect from './utils/connect';
+const PORT = parseInt(process.env.PORT ?? `5173`, 10);
 const app = express();
-
+import logger from './utils/logger';
+import routes from './routes/routes';
 /* middlewares */
 app.use(cookieparser('6*7d-dN5x2V4'));
 app.use(express.json());
@@ -21,6 +23,8 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
+server.listen(PORT, async () => {
+  logger.info(`http://localhost:${PORT}`);
+  await connect(); // Database conncetion
+  routes(app);
 });
