@@ -1,4 +1,4 @@
-import { create, get } from 'lodash';
+import { create, get, update } from 'lodash';
 import config from 'config';
 import { FilterQuery, UpdateQuery } from 'mongoose';
 import SessionModel, { SessionDocument } from '../models/session.model';
@@ -14,4 +14,11 @@ export async function createSession(userId: string, userAgent: string) {
 
 export async function findSessions(query: FilterQuery<SessionDocument>) {
   return SessionModel.find(query).populate('user').lean();
+}
+
+export async function updateSession(
+  query: FilterQuery<SessionDocument>,
+  update: UpdateQuery<SessionDocument>
+) {
+  return SessionModel.updateOne(query, update);
 }

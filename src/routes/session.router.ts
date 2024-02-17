@@ -1,5 +1,6 @@
 import {
   createUserSessionHandler,
+  deleteUserSessionHandler,
   getUserSessionHandler,
 } from '../controller/session.controller';
 import { createSessionSchema } from '../schema/session.schema';
@@ -14,6 +15,7 @@ const router = Router();
 router
   .route('/')
   .get(requireUser, getUserSessionHandler)
+  .delete(requireUser, deleteUserSessionHandler)
   .post(validateResource(createSessionSchema), createUserSessionHandler);
 router
   .route('/healthcheck')

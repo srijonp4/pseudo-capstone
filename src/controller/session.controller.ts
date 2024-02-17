@@ -3,7 +3,11 @@ import logger from '../utils/logger';
 import config from 'config';
 import { validatePassword } from '../services/user.service';
 import { signJWT } from '../utils/jwt.utils';
-import { createSession, findSessions } from '../services/session.service';
+import {
+  createSession,
+  findSessions,
+  updateSession,
+} from '../services/session.service';
 
 export async function createUserSessionHandler(req: Request, res: Response) {
   //validate the user password
@@ -44,12 +48,17 @@ export async function createUserSessionHandler(req: Request, res: Response) {
 export async function getUserSessionHandler(req: Request, res: Response) {
   const userId = res.locals.user._id;
   console.log('userID : ', userId);
-  const sessions = await findSessions({ user: userId });
+  const sessions = await findSessions({ user: userId, valid: true });
   console.log(sessions);
 
   return res.send(sessions);
 }
 
-// export async function deleteSessionHandler(req: Request, res: Response) {
-//   const sessio;
-// }
+export async function deleteUserSessionHandler(req: Request, res: Response) {
+  const sessionId = res.locals.user.session;
+  await updateSession({ _id: sessionId }, { valid: false });
+  return res.send({
+    accessToken: null,
+    refreshToken: null,
+  });
+}
