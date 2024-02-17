@@ -11,10 +11,12 @@ const PORT = parseInt(process.env.PORT ?? `5173`, 10);
 const app = express();
 import logger from './utils/logger';
 import routes from './routes/routes';
+import deserializeUser from './middleware/deserializeUser';
 /* middlewares */
 app.use(cookieparser('6*7d-dN5x2V4'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(deserializeUser);
 const server = http.createServer(app);
 
 app.get('/', (req: Request, res: Response) => {

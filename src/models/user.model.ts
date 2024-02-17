@@ -38,7 +38,7 @@ userSchema.pre<UserDocument>('save', async function (next) {
   const user = this;
   if (!user.isModified('password')) return next();
   try {
-    const salt = await bcrypt.genSalt(config.get<number>('salt'));
+    const salt = await bcrypt.genSalt(config.get<number>('saltWorkFactor'));
     const hashedPassword = await bcrypt.hash(user.password, salt);
     user.password = hashedPassword;
     return next();

@@ -9,6 +9,7 @@ const validateResource =
         query: req.query,
         params: req.params,
       });
+      next();
     } catch (e) {
       if (e instanceof Error) {
         return res.status(400).send(e.message);
